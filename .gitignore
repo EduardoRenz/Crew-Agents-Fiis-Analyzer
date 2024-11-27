@@ -1,0 +1,6 @@
+.env
+reports
+db
+*.cpython*
+
+__pycache__

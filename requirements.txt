@@ -1,0 +1,5 @@
+crewai>=0.76.2
+python-dotenv
+crewai_tools
+langchain
+langchain-google-genai
