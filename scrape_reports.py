@@ -130,9 +130,6 @@ class FIIReportScraper:
         Returns:
             List[Tuple[str, Path]]: Lista de tuplas (data, caminho) dos relatórios baixados
         """
-        fii_folder = self.output_dir / fii
-        fii_folder.mkdir(parents=True, exist_ok=True)
-        
         print(f'\n{"="*50}')
         print(f'Processando {fii}...')
         print(f'{"="*50}')
@@ -145,8 +142,8 @@ class FIIReportScraper:
         for i, (date, link) in enumerate(links, 1):
             print(f'\n[{i}/{len(links)}] Processando relatório de {date}')
             
-            pdf_filename = f"relatorio_{date.replace('/', '')}.pdf"
-            pdf_path = fii_folder / pdf_filename
+            # Salvar com o nome do FII
+            pdf_path = self.output_dir / f"{fii}.pdf"
             
             if self.download_pdf(link, pdf_path):
                 downloaded_reports.append((date, pdf_path))
