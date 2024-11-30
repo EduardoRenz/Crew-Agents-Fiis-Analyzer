@@ -206,7 +206,8 @@ class FIIReportScraper:
 
 
 def main():
-    fiis = [    "RZTR11",
+    fiis = [
+    "RZTR11",
     "XPLG11",
     "HGLG11",
     "XPML11",
