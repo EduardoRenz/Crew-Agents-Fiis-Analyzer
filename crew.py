@@ -26,11 +26,11 @@ analyst = Agent(
     tools=[pdf_search, write_tool]
 )
 
-
 analyse = Task(
     description="""
     Para o ativo: {input}, faca a analise e responda as seguintes perguntas:
     A informacao pode ser encontrada no pdf em reports/{input}.pdf
+    Caso não consiga encontrar o pdf, ignore o ativo.
 
     - Ativo possui vacancia fisica e/ou financeira, quanto?
     - Qual o WAULT ou tempo médio dos contratos?
