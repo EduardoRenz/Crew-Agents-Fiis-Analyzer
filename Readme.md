@@ -3,6 +3,10 @@
 A tool to help analyze mutual fii fund reports.
 AI agents will download management reports from mutual funds and answer questions about them.
 
+## Requirements
+
+You shuld add a .env file with OPENAI_API_KEY before use it.
+
 ## How to use
 
 1. Install the dependencies with `pip install -r requirements.txt`
@@ -16,6 +20,7 @@ AI agents will download management reports from mutual funds and answer question
 O arquivo `final_report.md` terá o seguinte formato:
 
 1. **RZTR11**
+
    - **Dividend Yield Anual:** 0,99%
    - **Vacância:** 15,24%
    - **WAULT:** 15,24 anos
