@@ -1,5 +1,8 @@
 # Crew Agents Fii Analyzer
 
+![image](https://github.com/user-attachments/assets/586fcf5f-a4fb-4c03-b670-bff611fc489c)
+
+
 A tool to help analyze mutual fii fund reports.
 AI agents will download management reports from mutual funds and answer questions about them.
 
