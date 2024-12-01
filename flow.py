@@ -1,7 +1,7 @@
 from crewai.flow.flow import Flow, listen, start
 from constants import MY_FIIS
 from scrape_reports import FIIReportScraper
-from fii_report_analyser import fiiCrew
+from crew import fiiCrew
 
 
 class FiiFlow(Flow):
