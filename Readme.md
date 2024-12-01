@@ -9,6 +9,14 @@ AI agents will download management reports from mutual funds and answer question
 
 You shuld add a .env file with OPENAI_API_KEY before use it.
 
+# Prepare conda environment
+
+```bash
+conda create -n crew python=3.10
+conda activate crew
+pip install -r requirements.txt
+```
+
 ## How to use
 
 1. Install the dependencies with `pip install -r requirements.txt`
