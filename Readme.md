@@ -1,6 +1,6 @@
-# FII Report Analyser With CrewAI
+# Crew Agents Fii Analyzer
 
-A tool to help analyze mutual fund reports.
+A tool to help analyze mutual fii fund reports.
 AI agents will download management reports from mutual funds and answer questions about them.
 
 ## How to use
