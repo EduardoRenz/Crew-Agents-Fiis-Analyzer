@@ -13,5 +13,6 @@ MY_FIIS = [
     "KNRI11",
     "BTLG11",
     "PVBI11",
-    "IRDM11"
+    "IRDM11",
+    "TVRI11"
 ]
