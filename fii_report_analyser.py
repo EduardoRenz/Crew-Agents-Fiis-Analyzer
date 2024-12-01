@@ -35,7 +35,7 @@ report_getter = Agent(
     Se mesmo assim não for possivel encontrar o relatório, no report final para este ativo, diga que não foi encontrado.
     
     Pode ser que para alguns ativos exista o pdf e outros nao, saiba determinar qual falta para fazer o download se precisar.
-    A ferramente download sempre espera uma lista de ativos, mesmo que exista epenas um.
+    A ferramenta de download sempre espera uma lista de ativos, mesmo que exista epenas um.
     """,
     backstory="Organizador de relatórios",
     verbose=True,
@@ -69,10 +69,10 @@ research = Task(
     A informacao pode ser encontrada nos pdfs disponiveis na pasta reports
     Cada ativo contem um relatorio, exemplo:
     reports/NOME_ATIVO.pdf
-    
+
     - Ativo possui vacancia fisica e/ou financeira, quanto?
     - Qual o WAULT ou tempo médio dos contratos?
-    - Há inadimplencia?
+    - Há inadimplencia se sim, quanto?
 
     Por fim use o SaveMdTool para salvar as respostas em um arquivo markdown no arquivo outputs/NOME_DO_FII.md
     Deve criar um arquivo por ativo
@@ -80,18 +80,17 @@ research = Task(
     expected_output="Responder exatamente o que foi pedido na tarefa",
     agent=analyst,
     tools=[pdf_search,write_tool],
-    
 )
 
 
 
 crew = Crew(
     agents=[
-       # report_getter,
+       report_getter,
         analyst,
     ],
     tasks=[
-        #get_report,
+        get_report,
         research,
     ],
     verbose=True,
