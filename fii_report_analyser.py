@@ -23,19 +23,20 @@ pdf_search = PDFSearchTool()
 directory_list_tool = DirectoryListTool()
 report_downloader = ReportDownloadTool()
 
-report_getter  = Agent(
+report_getter = Agent(
     llm=llm,
     role='Buscador de Relatorio',
-    goal=""""Garantir que exista os relatorios para o analista de mercado, ira checar o diretorio se existe o pdf, caso nao ache, vai baixar.
+    goal=""""
+    - Verifique se há um pdf com o relatório na pasta.
+    - Caso não existir, tente fazer o download
+    Se mesmo assim não for possivel encontrar o relatório, no report final para este ativo, diga que não foi encontrado.
     
     Pode ser que para alguns ativos exista o pdf e outros nao, saiba determinar qual falta para fazer o download se precisar.
-
     A ferramente download sempre espera uma lista de ativos, mesmo que exista epenas um.
-
     """,
     backstory="Organizador de relatórios",
     verbose=True,
-    tools=[directory_list_tool,report_downloader]
+    tools=[directory_list_tool, report_downloader]
 )
 get_report = Task(
     description="""
@@ -45,7 +46,7 @@ get_report = Task(
     """,
     expected_output="Ter certeza de que todos os relatorios dos fiis solicitados estao disponiveis",
     agent=report_getter,
-    tools=[directory_list_tool,report_downloader],
+    tools=[directory_list_tool, report_downloader],
 )
 
 analyst = Agent(
@@ -58,7 +59,6 @@ analyst = Agent(
 )
 
 
-
 research = Task(
     description="""
     Para cada ativo: {input}, faca a analise e responda as seguintes perguntas:
@@ -66,12 +66,12 @@ research = Task(
     Cada ativo contem um relatorio, exemplo:
     reports/NOME_ATIVO.pdf
 
-    ## NOME_DO_ATIVO
-    Pergunta: Qual o Dividend Yield anual do ativo?:
-    Pergunta: Ativo possui vacancia, qual percentual?
-    Pergunta: Qual o WAULT ou tempo médio dos contratos?
+    - Qual o Dividend Yield anual do ativo?:
+    - Ativo possui vacancia fisica e/ou financeira, quanto?
+    - Qual o WAULT ou tempo médio dos contratos?
+    - Há inadimplencia nos contratos? Busque o percenual, ou resuma se há menção sobre isso.
 
-
+    Pergunte cada pergunta individualmente para os pdfs disponiveis
     """,
     expected_output="Obter indicadores atualizados do ativo solicitado",
     agent=analyst,
