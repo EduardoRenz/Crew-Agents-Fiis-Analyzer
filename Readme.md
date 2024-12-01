@@ -21,7 +21,7 @@ pip install -r requirements.txt
 
 1. Install the dependencies with `pip install -r requirements.txt`
 2. Add the codes of the FIIs you want to analyze to the `constants.py` file
-3. Run the script with `python fii_report_analyser.py`
+3. Run the script with `python flow.py`
 4. The script will download the reports of the FIIs and save them in the `reports` folder
 5. The script will generate a report for each FII in the `outputs` folder
 
