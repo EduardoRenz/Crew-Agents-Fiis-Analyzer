@@ -8,6 +8,7 @@ from pathlib import Path
 import re
 from datetime import datetime
 from typing import List, Tuple, Optional
+from constants import MY_FIIS
 
 
 class FIIReportScraper:
@@ -206,25 +207,10 @@ class FIIReportScraper:
 
 
 def main():
-    fiis = [
-    "RZTR11",
-    "XPLG11",
-    "HGLG11",
-    "XPML11",
-    "VGHF11",
-    "VISC11",
-    "MXRF11",
-    "CPTS11",
-    "GARE11",
-    "PORD11",
-    "TEPP11",
-    "KNRI11",
-    "BTLG11",
-    "PVBI11"]
+    fiis = MY_FIIS
     scraper = FIIReportScraper()
     results = scraper.process_fiis(fiis)
-    scraper.save_to_markdown(results)
-    print('Links salvos em reports/reports_links.md')
+    print('Pdfs salvos')
 
 
 if __name__ == '__main__':
