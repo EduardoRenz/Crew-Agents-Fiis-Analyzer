@@ -1,10 +1,11 @@
-from crewai_tools import PDFSearchTool, tool
+from crewai_tools import PDFSearchTool, tool,FileWriterTool
 from crewai import Agent, Crew, Task, LLM
 from dotenv import load_dotenv
 from datetime import datetime
 from constants import MY_FIIS
 from custom_tools.ReportDownloadTool import ReportDownloadTool
 from custom_tools.DirectoryListTool import DirectoryListTool
+from custom_tools.SaveMdTool import SaveMdTool
 import os
 load_dotenv()
 
@@ -22,6 +23,8 @@ llm = LLM(
 pdf_search = PDFSearchTool()
 directory_list_tool = DirectoryListTool()
 report_downloader = ReportDownloadTool()
+write_tool = SaveMdTool()
+
 
 report_getter = Agent(
     llm=llm,
@@ -38,6 +41,17 @@ report_getter = Agent(
     verbose=True,
     tools=[directory_list_tool, report_downloader]
 )
+
+analyst = Agent(
+    llm=llm,
+    role='Analista de mercado',
+    goal="Responder exatamente o que foi pedido na tarefa",
+    backstory="Expert analista de mercado",
+    verbose=True,
+    tools=[pdf_search,write_tool]
+)
+
+
 get_report = Task(
     description="""
     Para cada ativo: {input}, pode haver um pdf com o caminho reports/NOME_ATIVO.pdf
@@ -49,44 +63,35 @@ get_report = Task(
     tools=[directory_list_tool, report_downloader],
 )
 
-analyst = Agent(
-    llm=llm,
-    role='Analista de mercado',
-    goal="Responder exatamente o que foi pedido na tarefa",
-    backstory="Expert analista de mercado",
-    verbose=True,
-    tools=[pdf_search]
-)
-
-
 research = Task(
     description="""
     Para cada ativo: {input}, faca a analise e responda as seguintes perguntas:
     A informacao pode ser encontrada nos pdfs disponiveis na pasta reports
     Cada ativo contem um relatorio, exemplo:
     reports/NOME_ATIVO.pdf
-
-    - Qual o Dividend Yield anual do ativo?:
+    
     - Ativo possui vacancia fisica e/ou financeira, quanto?
     - Qual o WAULT ou tempo médio dos contratos?
-    - Há inadimplencia nos contratos? Busque o percenual, ou resuma se há menção sobre isso.
+    - Há inadimplencia?
 
-    Pergunte cada pergunta individualmente para os pdfs disponiveis
+    Por fim use o SaveMdTool para salvar as respostas em um arquivo markdown no arquivo outputs/NOME_DO_FII.md
+    Deve criar um arquivo por ativo
     """,
-    expected_output="Obter indicadores atualizados do ativo solicitado",
+    expected_output="Responder exatamente o que foi pedido na tarefa",
     agent=analyst,
-    tools=[pdf_search],
-    output_file='final_report.md',
+    tools=[pdf_search,write_tool],
+    
 )
+
 
 
 crew = Crew(
     agents=[
-        report_getter,
+       # report_getter,
         analyst,
     ],
     tasks=[
-        get_report,
+        #get_report,
         research,
     ],
     verbose=True,

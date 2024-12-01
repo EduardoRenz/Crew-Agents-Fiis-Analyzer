@@ -15,7 +15,7 @@ You shuld add a .env file with OPENAI_API_KEY before use it.
 2. Add the codes of the FIIs you want to analyze to the `constants.py` file
 3. Run the script with `python fii_report_analyser.py`
 4. The script will download the reports of the FIIs and save them in the `reports` folder
-5. The script will generate a `final_report.md` file with the results of the analysis
+5. The script will generate a report for each FII in the `outputs` folder
 
 ## Example output
 
