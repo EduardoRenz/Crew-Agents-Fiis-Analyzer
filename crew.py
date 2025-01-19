@@ -35,6 +35,9 @@ analyse = Task(
     - Ativo possui vacancia fisica e/ou financeira, quanto?
     - Qual o WAULT ou tempo médio dos contratos?
     - Há inadimplencia se sim, quanto?
+
+
+    Por fim escreva um resumo entre pontos positivos e negativos sobre o ativo
     """,
     expected_output="Responder exatamente o que foi pedido na tarefa, deve apenas usar informações contidas nos textos, sem inventar",
     agent=analyst,
