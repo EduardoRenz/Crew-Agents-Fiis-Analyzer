@@ -32,6 +32,7 @@ analyse = Task(
     A informacao pode ser encontrada no pdf em reports/{input}.pdf
     Caso não consiga encontrar o pdf, ignore o ativo.
 
+    - Qual o preco sobre valor patrimonial (P/VP) atual?
     - Ativo possui vacancia fisica e/ou financeira, quanto?
     - Qual o WAULT ou tempo médio dos contratos?
     - Há inadimplencia se sim, quanto?
