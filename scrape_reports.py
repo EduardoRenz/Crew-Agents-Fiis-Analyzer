@@ -30,6 +30,18 @@ class FIIReportScraper:
         chrome_options.add_argument('--disable-dev-shm-usage')
         self.driver = webdriver.Chrome(options=chrome_options)
 
+    def _is_pdf(self, content: bytes) -> bool:
+        return content.startswith(b'%PDF')
+
+    def _is_html(self, content: bytes) -> bool:
+        text_content = content.decode('utf-8', errors='ignore')
+        return '<html' in text_content or '<!DOCTYPE' in text_content
+
+    def save_pdf(self, content: bytes, save_path: Path) -> bool:
+        with open(save_path, 'wb') as f:
+            f.write(content)
+        return True
+
     def download_pdf(self, url: str, save_path: Path) -> bool:
         """
         Baixa um PDF de uma URL e salva no caminho especificado.
@@ -62,28 +74,15 @@ class FIIReportScraper:
 
             if response.status_code == 200:
                 content = response.content
-                if content.startswith(b'%PDF'):
-                    with open(save_path, 'wb') as f:
-                        f.write(content)
-                    print(f"✓ PDF salvo em: {save_path}")
-                    return True
-                else:
-                    print("❌ O conteúdo não é um PDF válido")
-                    try:
-                        text_content = content.decode('utf-8', errors='ignore')
-                        if '<html' in text_content or '<!DOCTYPE' in text_content:
-                            pdf_match = re.search(
-                                r'href=[\'"]([^\'"]*\.pdf)[\'"]', text_content)
-                            if pdf_match:
-                                pdf_url = pdf_match.group(1)
-                                print(
-                                    f"Encontrado link direto para PDF: {pdf_url}")
-                                return self.download_pdf(pdf_url, save_path)
-                    except Exception as decode_error:
-                        print(
-                            f"Erro ao decodificar conteúdo: {str(decode_error)}")
-                    return False
-            else:
+                if self._is_pdf(content):
+                    return self.save_pdf(content, save_path)
+
+                if self._is_html(content):
+                    pdf_match = re.search(
+                        r'href=[\'"]([^\'"]*\.pdf)[\'"]', content.decode('utf-8', errors='ignore'))
+                    pdf_url = pdf_match.group(1)
+                    return self.download_pdf(pdf_url, save_path)
+
                 print(f"❌ Erro ao baixar PDF. Status: {response.status_code}")
                 return False
 
