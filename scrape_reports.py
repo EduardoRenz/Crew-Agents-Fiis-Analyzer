@@ -12,6 +12,15 @@ from constants import MY_FIIS
 
 
 class FIIReportScraper:
+    source_base_url = 'https://fiis.com.br'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Accept': 'application/pdf,*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive',
+        'Referer': source_base_url
+    }
+
     def __init__(self, output_dir: str = "reports"):
         """
         Inicializa o scraper de relatórios de FIIs.
@@ -56,21 +65,13 @@ class FIIReportScraper:
         try:
             print(f"\nBaixando PDF de: {url}")
 
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'application/pdf,*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
-                'Referer': 'https://fiis.com.br/'
-            }
-
             verify = False if 'bmfbovespa.com.br' in url else True
             if not verify:
                 import urllib3
                 urllib3.disable_warnings(
                     urllib3.exceptions.InsecureRequestWarning)
 
-            response = requests.get(url, headers=headers, verify=verify)
+            response = requests.get(url, headers=self.headers, verify=verify)
 
             if response.status_code == 200:
                 content = response.content
@@ -102,7 +103,7 @@ class FIIReportScraper:
         Returns:
             List[Tuple[str, str]]: Lista de tuplas (data, url) dos relatórios
         """
-        url = f'https://fiis.com.br/{fii_code.lower()}'
+        url = f'{self.source_base_url}/{fii_code.lower()}'
         print(f"\nAcessando {url}")
         self.driver.get(url)
 
@@ -187,22 +188,6 @@ class FIIReportScraper:
         finally:
             if self.driver:
                 self.driver.quit()
-
-    def save_to_markdown(self, results: dict, output_file: str = "reports/reports_links.md") -> None:
-        """
-        Salva os resultados em um arquivo markdown.
-
-        Args:
-            results: Dicionário com os resultados do processamento
-            output_file: Caminho do arquivo markdown de saída
-        """
-        with open(output_file, 'w', encoding='utf-8') as f:
-            for fii, reports in results.items():
-                f.write(f'## {fii}\n')
-                for date, filepath in reports:
-                    relative_path = os.path.relpath(filepath, 'reports')
-                    f.write(f'- [{date}]({relative_path})\n')
-                f.write('\n')
 
 
 def main():
